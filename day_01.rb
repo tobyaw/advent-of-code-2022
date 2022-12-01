@@ -6,7 +6,5 @@ calories_by_elf = File.read('day_01_input.txt')
 
 puts calories_by_elf.max
 
-puts calories_by_elf.sort
-                    .reverse
-                    .first(3)
+puts calories_by_elf.max(3)
                     .sum
