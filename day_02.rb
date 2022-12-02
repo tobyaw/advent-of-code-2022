@@ -6,7 +6,8 @@ WINS = { 'A' => 'C', 'B' => 'A', 'C' => 'B' }
 strategy = File.read('day_02_input.txt').split("\n")
 
 scores_a = strategy.sort.uniq.to_h do |key|
-  (theirs, ours) = key.split.map { |i| i.tr('X-Z', 'A-C') }
+  (theirs, ours) = key.split
+  ours.tr!('X-Z', 'A-C')
 
   score = PLAYS[ours]
   if WINS[ours].eql? theirs
