@@ -1,31 +1,35 @@
 #!/usr/bin/env ruby
 
+PLAYS = { 'A' => 1, 'B' => 2, 'C' => 3 }
+WINS = { 'A' => 'C', 'B' => 'A', 'C' => 'B' }
+LOSSES = WINS.invert
+
 strategy = File.read('day_02_input.txt').split("\n")
 
-SCORES_A = {
-  'A X' => 4,
-  'A Y' => 8,
-  'A Z' => 3,
-  'B X' => 1,
-  'B Y' => 5,
-  'B Z' => 9,
-  'C X' => 7,
-  'C Y' => 2,
-  'C Z' => 6
-}.freeze
+scores_a = strategy.sort.uniq.to_h do |key|
+  (theirs, ours) = key.split.map { |i| i.tr('X-Z', 'A-C') }
 
-puts strategy.map { |i| SCORES_A[i] }.sum
+  score = PLAYS[ours]
+  if WINS[ours].eql? theirs
+    score += 6
+  elsif ours.eql? theirs
+    score += 3
+  end
 
-SCORES_B = {
-  'A X' => 3,
-  'A Y' => 4,
-  'A Z' => 8,
-  'B X' => 1,
-  'B Y' => 5,
-  'B Z' => 9,
-  'C X' => 2,
-  'C Y' => 6,
-  'C Z' => 7
-}.freeze
+  [key, score]
+end
 
-puts strategy.map { |i| SCORES_B[i] }.sum
+scores_b = strategy.sort.uniq.to_h do |key|
+  (theirs, outcome) = key.split
+
+  score = case outcome
+          when 'X' then 0 + PLAYS[WINS[theirs]]
+          when 'Y' then 3 + PLAYS[theirs]
+          when 'Z' then 6 + PLAYS[LOSSES[theirs]]
+          end
+
+  [key, score]
+end
+
+puts strategy.map { |i| scores_a[i] }.sum
+puts strategy.map { |i| scores_b[i] }.sum

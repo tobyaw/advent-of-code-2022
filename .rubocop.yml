@@ -4,3 +4,6 @@ AllCops:
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
+
+Style/MutableConstant:
+  Enabled: false
