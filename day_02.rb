@@ -2,7 +2,6 @@
 
 PLAYS = { 'A' => 1, 'B' => 2, 'C' => 3 }
 WINS = { 'A' => 'C', 'B' => 'A', 'C' => 'B' }
-LOSSES = WINS.invert
 
 strategy = File.read('day_02_input.txt').split("\n")
 
@@ -25,7 +24,7 @@ scores_b = strategy.sort.uniq.to_h do |key|
   score = case outcome
           when 'X' then 0 + PLAYS[WINS[theirs]]
           when 'Y' then 3 + PLAYS[theirs]
-          when 'Z' then 6 + PLAYS[LOSSES[theirs]]
+          when 'Z' then 6 + PLAYS[WINS.invert[theirs]]
           end
 
   [key, score]
