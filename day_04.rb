@@ -4,7 +4,7 @@ input = File.read('day_04_input.txt')
             .split(/[\n\-,]/)
             .map(&:to_i)
             .each_slice(2)
-            .map { |i| [*Range.new(*i)] }
+            .map { |i| Array(Range.new(*i)) }
             .each_slice(2)
 
 puts input.filter { |i| i.include? i.reduce(:&) }
