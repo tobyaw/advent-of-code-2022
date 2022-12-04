@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-calories_by_elf = File.read('day_01_input.txt')
-                      .split("\n\n")
-                      .map { |i| i.split("\n").map(&:to_i).sum }
+input = File.read('day_01_input.txt').split("\n\n")
+            .map { |i| i.split("\n").sum(&:to_i) }
 
-puts calories_by_elf.max
-puts calories_by_elf.max(3).sum
+puts input.max
+puts input.max(3).sum

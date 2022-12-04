@@ -3,9 +3,9 @@
 PLAYS = { 'A' => 1, 'B' => 2, 'C' => 3 }
 WINS = { 'A' => 'C', 'B' => 'A', 'C' => 'B' }
 
-strategy = File.read('day_02_input.txt').split("\n")
+input = File.read('day_02_input.txt').split("\n")
 
-scores_a = strategy.sort.uniq.to_h do |key|
+scores_a = input.sort.uniq.to_h do |key|
   (theirs, ours) = key.split
   ours.tr!('X-Z', 'A-C')
 
@@ -19,7 +19,7 @@ scores_a = strategy.sort.uniq.to_h do |key|
   [key, score]
 end
 
-scores_b = strategy.sort.uniq.to_h do |key|
+scores_b = input.sort.uniq.to_h do |key|
   (theirs, outcome) = key.split
 
   score = case outcome
@@ -31,5 +31,5 @@ scores_b = strategy.sort.uniq.to_h do |key|
   [key, score]
 end
 
-puts strategy.sum { |i| scores_a[i] }
-puts strategy.sum { |i| scores_b[i] }
+puts input.sum { |i| scores_a[i] }
+puts input.sum { |i| scores_b[i] }
