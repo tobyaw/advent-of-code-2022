@@ -3,7 +3,7 @@
 PLAYS = { 'A' => 1, 'B' => 2, 'C' => 3 }
 WINS = { 'A' => 'C', 'B' => 'A', 'C' => 'B' }
 
-input = File.read('day_02_input.txt').split("\n")
+input = File.readlines('day_02_input.txt', chomp: true)
 
 scores_a = input.sort.uniq.to_h do |key|
   (theirs, ours) = key.split

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-input = File.read('day_04_input.txt').split("\n")
+input = File.readlines('day_04_input.txt', chomp: true)
             .map { |i| i.split(/[,-]/).map(&:to_i).each_slice(2).map { |j| [*Range.new(*j)] } }
 
 puts input.filter { |i| i.include? i.reduce(:&) }.count
