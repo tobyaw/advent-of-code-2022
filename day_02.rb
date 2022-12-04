@@ -31,5 +31,5 @@ scores_b = strategy.sort.uniq.to_h do |key|
   [key, score]
 end
 
-puts strategy.map { |i| scores_a[i] }.sum
-puts strategy.map { |i| scores_b[i] }.sum
+puts strategy.sum { |i| scores_a[i] }
+puts strategy.sum { |i| scores_b[i] }
