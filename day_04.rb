@@ -9,6 +9,5 @@ input = File.read('day_04_input.txt')
 
 puts input.filter { |i| i.include? i.reduce(:&) }
           .count
-
 puts input.reject { |i| i.reduce(:&).empty? }
           .count

@@ -5,6 +5,5 @@ input = File.read('day_01_input.txt')
             .map { |i| i.split("\n").sum(&:to_i) }
 
 puts input.max
-
 puts input.max(3)
           .sum
