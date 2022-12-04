@@ -32,4 +32,5 @@ scores_b = input.sort.uniq.to_h do |key|
 end
 
 puts input.sum { |i| scores_a[i] }
+
 puts input.sum { |i| scores_b[i] }
