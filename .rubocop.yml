@@ -2,6 +2,9 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 3.1
 
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
