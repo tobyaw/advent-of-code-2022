@@ -2,7 +2,6 @@
 
 input = File.read('day_04_input.txt')
             .scan(/\d+/)
-            .map(&:to_i)
             .each_slice(2)
             .map { |i| Array(Range.new(*i)) }
             .each_slice(2)
