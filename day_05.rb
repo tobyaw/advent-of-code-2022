@@ -6,11 +6,10 @@ table, steps = File.read('day_05_input.txt')
 
 keys = table.pop
             .scan(/\d/)
-            .map(&:to_i)
 
 values = table.map(&:chars)
               .transpose
-              .select.with_index { |_j, i| (i % 4).eql? 1 }
+              .select.with_index { |_, i| (i % 4).eql? 1 }
               .map(&:reverse)
               .each { |i| i.delete(' ') }
 
@@ -21,10 +20,9 @@ stacks = {
 
 steps.each do |step|
   num, source, target = step.scan(/\d+/)
-                            .map(&:to_i)
 
-  stacks[:a][target].concat stacks[:a][source].pop(num).reverse
-  stacks[:b][target].concat stacks[:b][source].pop(num)
+  stacks[:a][target].concat stacks[:a][source].pop(num.to_i).reverse
+  stacks[:b][target].concat stacks[:b][source].pop(num.to_i)
 end
 
 stacks.each_value { |i| puts i.values.map(&:last).join }
