@@ -10,8 +10,7 @@ keys = table.pop
 
 values = table.map(&:chars)
               .transpose
-              .each_slice(4)
-              .map { |i| i[1] }
+              .select.with_index { |_j, i| (i % 4).eql? 1 }
               .map(&:reverse)
               .each { |i| i.delete(' ') }
 
