@@ -6,24 +6,25 @@ table, steps = File.read('day_05_input.txt')
 
 keys = table.pop
             .scan(/\d/)
+            .map(&:to_i)
 
 values = table.map(&:chars)
               .transpose
               .each_slice(4)
-              .map { |i| i[1].reverse.delete_if { |j| j.eql? ' ' } }
+              .map { |i| i[1].reverse }
+              .each { |i| i.delete(' ') }
 
-lookup_a = keys.zip(values).to_h
-lookup_b = keys.zip(values.map(&:dup)).to_h
+stacks = {
+  a: keys.zip(values).to_h,
+  b: keys.zip(values.map(&:dup)).to_h
+}
 
 steps.each do |step|
   num, source, target = step.scan(/\d+/)
+                            .map(&:to_i)
 
-  lookup_a[target].concat lookup_a[source].pop(num.to_i).reverse
-  lookup_b[target].concat lookup_b[source].pop(num.to_i)
+  stacks[:a][target].concat stacks[:a][source].pop(num).reverse
+  stacks[:b][target].concat stacks[:b][source].pop(num)
 end
 
-puts lookup_a.map { |_k, v| v.last }
-             .join
-
-puts lookup_b.map { |_k, v| v.last }
-             .join
+stacks.each_value { |i| puts i.values.map(&:last).join }
