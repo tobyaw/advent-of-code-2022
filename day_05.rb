@@ -13,10 +13,7 @@ values = table.map(&:chars)
               .map(&:reverse)
               .each { |i| i.delete(' ') }
 
-stacks = {
-  a: keys.zip(values).to_h,
-  b: keys.zip(values.map(&:dup)).to_h
-}
+stacks = %i[a b].to_h { |i| [i, keys.zip(values.map(&:dup)).to_h] }
 
 steps.map { |i| i.scan(/\d+/) }
      .each do |num, source, target|
