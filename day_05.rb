@@ -12,7 +12,7 @@ values = table.map(&:chars)
               .transpose
               .each_slice(4)
               .map { |i| i[1] }
-              .map { |i| i.reverse }
+              .map(&:reverse)
               .each { |i| i.delete(' ') }
 
 stacks = {
