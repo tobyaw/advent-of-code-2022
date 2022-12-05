@@ -18,9 +18,8 @@ stacks = {
   b: keys.zip(values.map(&:dup)).to_h
 }
 
-steps.each do |step|
-  num, source, target = step.scan(/\d+/)
-
+steps.map { |i| i.scan(/\d+/) }
+     .each do |num, source, target|
   stacks[:a][target].concat stacks[:a][source].pop(num.to_i).reverse
   stacks[:b][target].concat stacks[:b][source].pop(num.to_i)
 end
