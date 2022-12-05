@@ -11,7 +11,8 @@ keys = table.pop
 values = table.map(&:chars)
               .transpose
               .each_slice(4)
-              .map { |i| i[1].reverse }
+              .map { |i| i[1] }
+              .map { |i| i.reverse }
               .each { |i| i.delete(' ') }
 
 stacks = {
