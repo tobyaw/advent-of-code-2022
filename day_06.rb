@@ -2,8 +2,4 @@
 
 input = File.read('day_06_input.txt').chars
 
-[4, 14].each do |i|
-  puts i + input.each_cons(i).with_index
-                .find { |j, _| j.eql? j.uniq }
-                .last
-end
+puts [4, 14].map { |i| i + input.each_cons(i).with_index.find { |j, _| j.eql? j.uniq }.last }
