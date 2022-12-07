@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 
 folders = Hash.new(0)
-folder_stack = []
 
-File.readlines('day_07_input.txt', chomp: true).map(&:split).each do |line|
+File.readlines('day_07_input.txt', chomp: true).map(&:split).each_with_object([]) do |line, stack|
   case line
   in ['$', 'cd', '..']
-    folder_stack.pop
+    stack.pop
   in ['$', 'cd', folder]
-    folder_stack.push [folder_stack.last, folder].compact.join(' ')
+    stack.push [stack.last, folder].compact.join(' ')
   in [size, file] if size.match?(/^\d+$/)
-    folder_stack.each { |i| folders[i] += size.to_i }
+    stack.each { |i| folders[i] += size.to_i }
   else
   end
 end
