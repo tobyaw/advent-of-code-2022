@@ -9,10 +9,7 @@ File.readlines('day_07_input.txt', chomp: true).map(&:split).each_with_object([]
   in ['$', 'cd', folder]
     stack.push folder
   in [size, file] if size.match?(/^\d+$/)
-    stack.reduce('') do |sum, folder|
-      folder_sizes[sum += folder] += size.to_i
-      sum
-    end
+    stack.reduce('') { |j, i| folder_sizes[j += i] += size.to_i; j }
   else
   end
 end

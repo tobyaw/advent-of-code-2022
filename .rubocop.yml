@@ -13,3 +13,6 @@ Style/FrozenStringLiteralComment:
 
 Style/MutableConstant:
   Enabled: false
+
+Style/Semicolon:
+  Enabled: false
