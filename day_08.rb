@@ -8,7 +8,7 @@ input = File.readlines('day_08_input.txt', chomp: true)
     [grid_row, grid_row.reverse].each do |row|
       row.reduce([-1]) do |memo, cell|
         cell[:visible] = true if cell[:height] > memo.max
-        cell[:scores].push((memo.reverse.index { |i| i >= cell[:height] } || (memo.size - 2)) + 1)
+        cell[:scores] << ((memo.reverse.index { |i| i >= cell[:height] } || (memo.size - 2)) + 1)
         memo + [cell[:height]]
       end
     end
