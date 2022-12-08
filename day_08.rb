@@ -6,9 +6,9 @@ input = File.readlines('day_08_input.txt', chomp: true)
 [input, input.transpose].each do |grid|
   grid.each do |grid_row|
     [grid_row, grid_row.reverse].each do |row|
-      row.reduce([]) do |memo, cell|
-        cell[:visible] = true if cell[:height] > (memo.max || -1)
-        cell[:scores].push((memo.reverse.index { |i| i >= cell[:height] } || (memo.size - 1)) + 1)
+      row.reduce([-1]) do |memo, cell|
+        cell[:visible] = true if cell[:height] > memo.max
+        cell[:scores].push((memo.reverse.index { |i| i >= cell[:height] } || (memo.size - 2)) + 1)
         memo + [cell[:height]]
       end
     end
