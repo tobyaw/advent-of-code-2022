@@ -14,13 +14,7 @@ input = File.readlines('day_08_input.txt', chomp: true)
           l[:visible] = true
         end
 
-        visible = 0
-        sum.reverse.each do |item|
-          visible += 1
-          break if item >= l[:height]
-        end
-
-        l[:scores].push visible
+        l[:scores].push((sum.reverse.index { |m| m >= l[:height] } || (sum.size - 1)) + 1)
         sum + [l[:height]]
       end
     end
