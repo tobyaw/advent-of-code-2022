@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 
 input = File.readlines('day_08_input.txt', chomp: true)
-            .map { |i| i.chars.map { |j| { height: j.to_i, visible: false, score: [] } } }
+            .map { |i| i.chars.map { |j| { height: j.to_i, visible: false, scores: [] } } }
 
 [input, input.transpose].each do |i|
   i.each do |j|
     [j, j.reverse].each do |k|
       highest = -1
-      last = 0
       heights_so_far = []
 
       k.each do |l|
@@ -22,13 +21,12 @@ input = File.readlines('day_08_input.txt', chomp: true)
           break if item >= l[:height]
         end
 
-        l[:score].push visible
+        l[:scores].push visible
         heights_so_far.push l[:height]
-        last = l[:height]
       end
     end
   end
 end
 
 puts input.flatten.select { |i| i[:visible].eql? true }.count
-puts input.flatten.map { |i| i[:score].reduce(:*) }.max
+puts input.flatten.map { |i| i[:scores].reduce(:*) }.max
