@@ -3,19 +3,19 @@
 input = File.readlines('day_08_input.txt', chomp: true)
             .map { |i| i.chars.map { |j| { height: j.to_i, visible: false, scores: [] } } }
 
-[input, input.transpose].each do |i|
-  i.each do |j|
-    [j, j.reverse].each do |k|
+[input, input.transpose].each do |grid|
+  grid.each do |grid_row|
+    [grid_row, grid_row.reverse].each do |row|
       highest = -1
 
-      k.reduce([]) do |sum, l|
-        if l[:height] > highest
-          highest = l[:height]
-          l[:visible] = true
+      row.reduce([]) do |so_far, cell|
+        if cell[:height] > highest
+          highest = cell[:height]
+          cell[:visible] = true
         end
 
-        l[:scores].push((sum.reverse.index { |m| m >= l[:height] } || (sum.size - 1)) + 1)
-        sum + [l[:height]]
+        cell[:scores].push((so_far.reverse.index { |i| i >= cell[:height] } || (so_far.size - 1)) + 1)
+        so_far + [cell[:height]]
       end
     end
   end
