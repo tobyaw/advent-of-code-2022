@@ -13,20 +13,19 @@ input = File.readlines('day_09_input.txt', chomp: true).map(&:split)
       coords[0] = coords[0].zip(MOVES[direction]).map { |i| i.reduce(:+) }
 
       coords.each_cons(2) do |i, j|
-        if (i[0] - j[0]).abs > 1 && (i[1] - j[1]).abs > 1
-          j[0] = i[0] + (j[0] > i[0] ? 1 : -1)
-          j[1] = i[1] + (j[1] > i[1] ? 1 : -1)
-        elsif (i[1].eql? j[1]) && (i[0] - j[0]).abs > 1
-          j[0] = i[0] + (j[0] > i[0] ? 1 : -1)
-        elsif (i[0].eql? j[0]) && (i[1] - j[1]).abs > 1
-          j[1] = i[1] + (j[1] > i[1] ? 1 : -1)
-        elsif (i[0] - j[0]).abs > 1
-          j[0] = i[0] + (j[0] > i[0] ? 1 : -1)
-          j[1] = i[1]
-        elsif (i[1] - j[1]).abs > 1
-          j[0] = i[0]
-          j[1] = i[1] + (j[1] > i[1] ? 1 : -1)
-        end
+        diff = [0, 1].map { |k| j[k] - i[k] }
+        abs = diff.map { |k| k.abs > 1 }
+        offset = diff.map { |k| k.positive? ? 1 : -1 }
+
+        j[0], j[1] = if abs.reduce(:&)
+                       [i[0] + offset[0], i[1] + offset[1]]
+                     elsif abs[0]
+                       [i[0] + offset[0], i[1]]
+                     elsif abs[1]
+                       [i[0], i[1] + offset[1]]
+                     else
+                       [j[0], j[1]]
+                     end
       end
 
       positions.push coords[-1].join('x')
