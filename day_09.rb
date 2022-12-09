@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-MOVE = { 'D' => { x: 0, y: -1 }, 'U' => { x: 0, y: 1 }, 'L' => { x: -1, y: 0 }, 'R' => { x: 1, y: 0 } }
+MOVES = { 'D' => [0, -1], 'U' => [0, 1], 'L' => [-1, 0], 'R' => [1, 0] }
 
 input = File.readlines('day_09_input.txt', chomp: true).map(&:split)
 
@@ -10,8 +10,8 @@ input = File.readlines('day_09_input.txt', chomp: true).map(&:split)
 
   input.each do |direction, distance|
     distance.to_i.times do
-      coords.first[:x] += MOVE[direction][:x]
-      coords.first[:y] += MOVE[direction][:y]
+      coords.first[:x] += MOVES[direction][0]
+      coords.first[:y] += MOVES[direction][1]
 
       coords.each_cons(2) do |i, j|
         if (i[:x] - j[:x]).abs > 1 && (i[:y] - j[:y]).abs > 1
