@@ -11,20 +11,21 @@ MOVES = { 'D' => [0, -1], 'U' => [0, 1], 'L' => [-1, 0], 'R' => [1, 0] }
       coords[0] = coords[0].zip(MOVES[direction]).map { |i| i.reduce(:+) }
 
       coords.each_cons(2) do |i, j|
-        diff = [0, 1].map { |k| j[k] - i[k] }
+        diff = [0, 1].map { |k| i[k] - j[k] }
         abs = diff.map { |k| k.abs > 1 }
         offset = diff.map { |k| k.positive? ? 1 : -1 }
 
         adds = if abs.reduce(:&)
                  offset
                elsif abs[0]
-                 [offset[0], 0]
+                 [offset[0], diff[1]]
                elsif abs[1]
-                 [0, offset[1]]
+                 [diff[0], offset[1]]
+               else
+                 [0, 0]
                end
-        next if adds.nil?
 
-        [0, 1].each { |k| j[k] = i[k] + adds[k] }
+        [0, 1].each { |k| j[k] += adds[k] }
       end
 
       positions.push coords[-1].join('x')
