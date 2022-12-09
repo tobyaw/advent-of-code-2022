@@ -10,8 +10,7 @@ input = File.readlines('day_09_input.txt', chomp: true).map(&:split)
 
   input.each do |direction, distance|
     distance.to_i.times do
-      coords.first[0] += MOVES[direction][0]
-      coords.first[1] += MOVES[direction][1]
+      coords[0] = coords[0].zip(MOVES[direction]).map { |i| i.reduce(:+) }
 
       coords.each_cons(2) do |i, j|
         if (i[0] - j[0]).abs > 1 && (i[1] - j[1]).abs > 1
@@ -30,7 +29,7 @@ input = File.readlines('day_09_input.txt', chomp: true).map(&:split)
         end
       end
 
-      positions.push coords.last.join('x')
+      positions.push coords[-1].join('x')
     end
   end
 
