@@ -8,6 +8,9 @@ Layout/LineLength:
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
+Naming/MethodParameterName:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
