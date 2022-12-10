@@ -10,6 +10,5 @@ puts 20.step(by: 40, to: 220)
        .sum { |i| i * h[i - 1] }
 
 240.times
-   .map { |i| [i % 40, (h[i] - 1).upto(h[i] + 1)] }
-   .map { |i, j| j.include?(i) ? '#' : '.' }
+   .map { |i| -1.upto(1).include?((i % 40) - h[i]) ? '#' : '.' }
    .each_slice(40) { |i| puts i.join }
