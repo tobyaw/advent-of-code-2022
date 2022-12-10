@@ -3,17 +3,17 @@
 history = []
 
 File.readlines('day_10_input.txt', chomp: true).map(&:split)
-    .each.with_object({ c: 0, x: 1 }) do |line, state|
-  case line
-  in ['noop']
-    state[:c] += 1
-  in ['addx', i]
-    state[:c] += 2
-    state[:x] += i.to_i
-  end
+    .each.with_object({ x: 1 }) do |line, register|
+  history.push register[:x]
 
-  history.push state.dup
+  if line[0].eql? 'addx'
+    history.push register[:x]
+    register[:x] += line[1].to_i
+  end
 end
 
-# 14520
-puts 20.step(by: 40, to: 220).map { |c| c * history.select { |i| i[:c] < c }.last[:x] }.sum
+puts 20.step(by: 40, to: 220).sum { |i| i * history[i - 1] }
+
+240.times
+   .map { |i| (history[i] - 1).upto(history[i] + 1).include?(i % 40) ? '#' : '.' }
+   .each_slice(40) { |i| puts i.join }
