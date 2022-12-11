@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 [{ rounds: 20, div: 3 }, { rounds: 10_000, div: 1 }].each do |part|
-  monkies = File.read('day_11_input.txt').split("\n\n")
-                .map { |i| i.split("\n") }
-                .map do |i|
+  monkies = File.read('day_11_input.txt').split("\n\n").map do |i|
+    i = i.split("\n")
+
     {
       items: i[1].scan(/\d+/).map(&:to_i),
       oper: i[2].scan(/[+*]/).first.to_sym,
