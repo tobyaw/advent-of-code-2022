@@ -21,11 +21,12 @@
 
   part[:rounds].times.each do
     monkies.each do |i|
+      i[:inspections] += i[:items].size
+
       while (j = i[:items].shift)
         param = i[:param].eql?(:old) ? j : i[:param]
         j = (j.method(i[:oper]).call(param) / part[:div]) % mod
         monkies[(j % i[:test]).zero? ? i[:pass] : i[:fail]][:items].push j
-        i[:inspections] += 1
       end
     end
   end
