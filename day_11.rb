@@ -4,29 +4,29 @@
   monkies = File.read('day_11_input.txt').split("\n\n")
                 .map { |i| i.split("\n") }
                 .map do |i|
-    m = i[2].match(/new = old (.) (.+)$/)
-
     {
-      items: i[1].match(/: (.+)$/)[1].split(', ').map(&:to_i),
-      oper: m[1].to_sym,
-      param: m[2].match?(/^\d+$/) ? m[2].to_i : m[2].to_sym,
-      test: i[3].split.last.to_i,
-      pass: i[4].split.last.to_i,
-      fail: i[5].split.last.to_i,
+      items: i[1].scan(/\d+/).map(&:to_i),
+      oper: i[2].scan(/[+*]/).first.to_sym,
+      param: i[2].scan(/\d+$/).map(&:to_i).first,
+      test: i[3].scan(/\d+$/).first.to_i,
+      pass: i[4].scan(/\d+$/).first.to_i,
+      fail: i[5].scan(/\d+$/).first.to_i,
       inspections: 0
     }
   end
 
-  mod = monkies.map { |i| i[:test] }.reduce(:*)
+  lcm = monkies.map { |i| i[:test] }.reduce(:lcm)
 
   part[:rounds].times.each do
-    monkies.each do |i|
-      i[:inspections] += i[:items].size
+    monkies.each do |monkey|
+      monkey[:inspections] += monkey[:items].size
 
-      while (j = i[:items].shift)
-        param = i[:param].eql?(:old) ? j : i[:param]
-        j = (j.method(i[:oper]).call(param) / part[:div]) % mod
-        monkies[(j % i[:test]).zero? ? i[:pass] : i[:fail]][:items].push j
+      while (i = monkey[:items].shift)
+        param = monkey[:param] || i
+        i = (i.method(monkey[:oper]).call(param) / part[:div]) % lcm
+
+        target = (i % monkey[:test]).zero? ? monkey[:pass] : monkey[:fail]
+        monkies[target][:items] << i
       end
     end
   end
