@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-[{ rounds: 20, divide: 3 }, { rounds: 10_000, divide: 1 }].each do |part|
+[{ rounds: 20, div: 3 }, { rounds: 10_000, div: 1 }].each do |part|
   monkies = File.read('day_11_input.txt').split("\n\n")
                 .map { |i| i.split("\n") }
                 .map do |i|
@@ -22,7 +22,8 @@
   part[:rounds].times.each do
     monkies.each do |i|
       while (j = i[:items].shift)
-        j = (j.method(i[:oper]).call(i[:param].eql?(:old) ? j : i[:param]) / part[:divide]) % mod
+        param = i[:param].eql?(:old) ? j : i[:param]
+        j = (j.method(i[:oper]).call(param) / part[:div]) % mod
         monkies[(j % i[:test]).zero? ? i[:pass] : i[:fail]][:items].push j
         i[:inspections] += 1
       end
