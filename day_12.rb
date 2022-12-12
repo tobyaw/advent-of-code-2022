@@ -19,7 +19,7 @@ def find_target(grid, heads, target, depth = 1)
 
     directions = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
                  .reject { |x, y| x.negative? || y.negative? }
-                 .reject { |x, y| (x >= grid.first.size) || (y >= grid.size) }
+                 .select { |x, y| (x < grid.first.size) && (y < grid.size) }
                  .reject { |x, y| grid[y][x][:seen].eql? true }
                  .select { |x, y| grid[y][x][:height] - height < 2 }
 
