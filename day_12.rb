@@ -1,12 +1,5 @@
 #!/usr/bin/env ruby
 
-def find_char(grid, item)
-  y = grid.find_index { |i| i.include? item }
-  x = grid[y].index(item)
-
-  [x, y]
-end
-
 def find_next_steps(grid, heads, to, polarity, depth = 1)
   next_heads = []
 
@@ -21,7 +14,7 @@ def find_next_steps(grid, heads, to, polarity, depth = 1)
 
     raise depth.to_s if steps.map { |x, y| grid[y][x][:char] }.include? to
 
-    steps.each { |i| next_heads << i }
+    next_heads += steps
   end
 
   raise 'no options' if next_heads.empty?
@@ -35,11 +28,14 @@ input = File.readlines('day_12_input.txt', chomp: true)
   { from: 'S', to: 'E', polarity: 1 },
   { from: 'E', to: 'a', polarity: -1 }
 ].each do |part|
+  y = input.find_index { |i| i.include? part[:from] }
+  x = input[y].index(part[:from])
+
   grid = input.map do |i|
     i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
   end
 
-  find_next_steps(grid, [find_char(input, part[:from])], part[:to], part[:polarity])
+  find_next_steps(grid, [[x, y]], part[:to], part[:polarity])
 rescue StandardError => e
   puts e.message
 end
