@@ -14,7 +14,7 @@ def find_next_steps(grid, heads, target, polarity, depth = 1)
             .reject { |x, y| grid[y][x][:seen].eql? true }
             .filter { |x, y| polarity * (grid[y][x][:h] - grid[yh][xh][:h]) < 2 }
 
-    raise depth.to_s if steps.map { |x, y| grid[y][x][:char] }.include? target
+    return depth if steps.map { |x, y| grid[y][x][:char] }.include? target
 
     next_heads += steps
   end
@@ -35,7 +35,5 @@ input = File.readlines('day_12_input.txt', chomp: true)
     i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
   end
 
-  find_next_steps(grid, [[x, y]], part[:target], part[:polarity])
-rescue StandardError => e
-  puts e.message
+  puts find_next_steps(grid, [[x, y]], part[:target], part[:polarity])
 end
