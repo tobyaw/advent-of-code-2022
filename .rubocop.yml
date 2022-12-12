@@ -8,7 +8,19 @@ Layout/LineLength:
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
+Metrics/AbcSize:
+  Enabled: false
+
 Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Naming/MethodParameterName:
