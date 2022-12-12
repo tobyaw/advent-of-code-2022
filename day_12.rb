@@ -7,41 +7,39 @@ def find_char(grid, item)
   [x, y]
 end
 
-def find_target(grid, heads, target, depth = 1)
-  outputs = []
+def find_next_steps(grid, heads, to, polarity, depth = 1)
+  next_heads = []
 
   heads.each do |xh, yh|
     grid[yh][xh][:seen] = true
 
-    directions = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
-                 .reject { |x, y| x.negative? || y.negative? }
-                 .filter { |x, y| (x < grid.first.size) && (y < grid.size) }
-                 .reject { |x, y| grid[y][x][:seen].eql? true }
-                 .filter { |x, y| grid[y][x][:height] - grid[yh][xh][:height] < 2 }
+    steps = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
+            .reject { |x, y| x.negative? || y.negative? }
+            .filter { |x, y| (x < grid.first.size) && (y < grid.size) }
+            .reject { |x, y| grid[y][x][:seen].eql? true }
+            .filter { |x, y| polarity * (grid[y][x][:h] - grid[yh][xh][:h]) < 2 }
 
-    raise depth.to_s if directions.map { |x, y| grid[y][x][:char] }.include? target
+    raise depth.to_s if steps.map { |x, y| grid[y][x][:char] }.include? to
 
-    directions.each { |i| outputs << i }
+    steps.each { |i| next_heads << i }
   end
 
-  raise 'no options' if outputs.empty?
+  raise 'no options' if next_heads.empty?
 
-  find_target(grid, outputs.uniq, target, depth + 1)
+  find_next_steps(grid, next_heads.uniq, to, polarity, depth + 1)
 end
 
 input = File.readlines('day_12_input.txt', chomp: true)
 
 [
-  { start: 'S', target: 'E', tr: 'az', atoz: 'a-z' },
-  { start: 'E', target: 'z', tr: 'za', atoz: ('a'..'z').to_a.join.reverse }
+  { from: 'S', to: 'E', polarity: 1 },
+  { from: 'E', to: 'a', polarity: -1 }
 ].each do |part|
-  grid = input.map do |row|
-    row.tr('a-z', part[:atoz]).chars.map do |char|
-      { char:, height: char.tr('SE', part[:tr]).ord, seen: false }
-    end
+  grid = input.map do |i|
+    i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
   end
 
-  find_target(grid, [find_char(input, part[:start])], part[:target])
+  find_next_steps(grid, [find_char(input, part[:from])], part[:to], part[:polarity])
 rescue StandardError => e
   puts e.message
 end
