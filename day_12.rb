@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 def find_next_steps(grid, heads, to, polarity, depth = 1)
+  return if heads.empty?
+
   next_heads = []
 
   heads.each do |xh, yh|
@@ -16,8 +18,6 @@ def find_next_steps(grid, heads, to, polarity, depth = 1)
 
     next_heads += steps
   end
-
-  raise 'no options' if next_heads.empty?
 
   find_next_steps(grid, next_heads.uniq, to, polarity, depth + 1)
 end
