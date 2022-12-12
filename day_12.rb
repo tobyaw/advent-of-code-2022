@@ -13,16 +13,13 @@ end
 def find_target(grid, heads, target, depth = 1)
   outputs = []
 
-  heads.each do |head|
-    xl, yl = head
-    grid[yl][xl][:seen] = true
-    height = grid[yl][xl][:height]
+  heads.each do |xh, yh|
+    grid[yh][xh][:seen] = true
+    height = grid[yh][xh][:height]
 
-    grid_width = grid.first.size
-    grid_height = grid.size
-
-    directions = [[xl, yl + 1], [xl, yl - 1], [xl + 1, yl], [xl - 1, yl]]
-                 .reject { |x, y| x.negative? || y.negative? || (x >= grid_width) || (y >= grid_height) }
+    directions = [[xh, yh + 1], [xh, yh - 1], [xh + 1, yh], [xh - 1, yh]]
+                 .reject { |x, y| x.negative? || y.negative? }
+                 .reject { |x, y| (x >= grid.first.size) || (y >= grid.size) }
                  .reject { |x, y| grid[y][x][:seen].eql? true }
                  .select { |x, y| grid[y][x][:height] - height < 2 }
 
