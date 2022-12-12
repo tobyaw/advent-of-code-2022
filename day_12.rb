@@ -36,9 +36,7 @@ input = File.readlines('day_12_input.txt', chomp: true)
   { start: 'E', target: 'z', tr: 'za', atoz: ('a'..'z').to_a.join.reverse }
 ].each do |part|
   grid = input.map do |row|
-    row.tr('a-z', part[:atoz])
-       .chars
-       .map do |char|
+    row.tr('a-z', part[:atoz]).chars.map do |char|
       { char:, height: char.tr('SE', part[:tr]).ord, seen: false }
     end
   end
