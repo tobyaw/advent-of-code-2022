@@ -13,10 +13,8 @@ end
 def find_target(grid, heads, target, depth = 1)
   outputs = []
 
-  puts "depth #{depth} with #{heads.count} heads"
   heads.each do |head|
     xl, yl = head
-    xt, yt = target
     grid[yl][xl][:seen] = true
     height = grid[yl][xl][:height]
 
@@ -25,11 +23,10 @@ def find_target(grid, heads, target, depth = 1)
 
     directions = [[xl, yl + 1], [xl, yl - 1], [xl + 1, yl], [xl - 1, yl]]
                  .reject { |x, y| x.negative? || y.negative? || (x >= grid_width) || (y >= grid_height) }
-                 .sort_by { |x, y| ((x - xt)**2) + ((y - yt)**2) }
                  .reject { |x, y| grid[y][x][:seen].eql? true }
                  .select { |x, y| grid[y][x][:height] - height < 2 }
 
-    raise "done in #{depth}" if directions.include? target
+    raise depth.to_s if directions.map { |x, y| grid[y][x][:char] }.include? target
 
     directions.each { |i| outputs << i }
   end
@@ -39,9 +36,12 @@ def find_target(grid, heads, target, depth = 1)
   find_target(grid, outputs.uniq, target, depth + 1)
 end
 
-begin
-  grid = input.map { |i| i.chars.map { |j| { char: j, height: j.tr('SE', 'az').ord, seen: false } } }
-  find_target(grid, [find_char(input, 'S')], find_char(input, 'E'))
+[
+  { start: 'S', target: 'E', tr: 'az', atoz: 'a-z' },
+  { start: 'E', target: 'z', tr: 'za', atoz: ('a'..'z').to_a.join.reverse }
+].each do |part|
+  grid = input.map { |i| i.tr('a-z', part[:atoz]).chars.map { |j| { char: j, height: j.tr('SE', part[:tr]).ord, seen: false } } }
+  find_target(grid, [find_char(input, part[:start])], part[:target])
 rescue StandardError => e
   puts e.message
 end
