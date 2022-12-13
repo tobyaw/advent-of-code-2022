@@ -14,9 +14,9 @@ def compare(left, right)
     return true if heads.reduce(:<)
     return false if heads.reduce(:>)
   else
-    arr_heads = heads.map { |i| i.instance_of?(Integer) ? [i] : i }
-    arr_comp = compare(arr_heads[0], arr_heads[1])
-    return arr_comp if [true, false].include? arr_comp
+    heads.map! { |i| i.instance_of?(Integer) ? [i] : i }
+    comp = compare(heads[0], heads[1])
+    return comp if [true, false].include? comp
   end
 
   compare(left.slice(1..), right.slice(1..))
@@ -26,9 +26,8 @@ input = File.read('day_13_input.txt').split("\n\n")
             .map { |i| i.split("\n").map { |j| JSON.parse(j) } }
 
 dividers = [2, 6].map { |i| [[i]] }
+packets = [nil] + input.reduce([]) { |acc, (i, j)| acc << i << j }.concat(dividers)
+                       .sort_by { |i| i.to_s.gsub(/\[\]/, '0').gsub(/[\[\]]/, '').split(', ').map(&:to_i) }
 
-packets = input.reduce([]) { |acc, (i, j)| acc << i << j }.concat(dividers)
-               .sort_by { |i| i.to_s.gsub(/\[\]/, '0').gsub(/[\[\]]/, '').split(', ').map(&:to_i) }
-
-puts input.map.with_index { |(l, r), i| compare(l, r) ? i + 1 : 0 }.sum
-puts dividers.map { |i| packets.index(i) + 1 }.reduce(:*)
+puts input.map.with_index(1) { |(l, r), i| compare(l, r) ? i : 0 }.sum
+puts dividers.map { |i| packets.index(i) }.reduce(:*)
