@@ -22,14 +22,21 @@ def compare(left, right)
   compare(left.slice(1..), right.slice(1..))
 end
 
-input = File.read('day_13_input.txt').split("\n\n")
+puts File.read('day_13_input.txt')
+         .split("\n\n")
+         .map { |i| i.split("\n") }
+         .map { |i| i.map { |j| JSON.parse(j) } }
+         .map.with_index(1) { |(l, r), i| compare(l, r) ? i : 0 }
+         .sum
 
 dividers = [2, 6].map { |i| [i] }
-packets = [nil] + input.map { |i| i.gsub('[]', '[0]').split("\n").map { |j| JSON.parse(j) } }
-                       .reduce([]) { |acc, (i, j)| acc << i << j }
-                       .concat(dividers)
-                       .sort_by(&:flatten)
+packets = [nil] + File.read('day_13_input.txt')
+                      .split("\n\n")
+                      .map { |i| i.gsub('[]', '[0]') }
+                      .map { |i| i.split("\n") }
+                      .map { |i| i.map { |j| JSON.parse(j) } }
+                      .reduce([]) { |acc, (i, j)| acc << i << j }
+                      .concat(dividers)
+                      .sort_by(&:flatten)
 
-puts input.map { |i| i.split("\n").map { |j| JSON.parse(j) } }
-          .map.with_index(1) { |(l, r), i| compare(l, r) ? i : 0 }.sum
 puts dividers.map { |i| packets.index(i) }.reduce(:*)
