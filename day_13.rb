@@ -28,5 +28,14 @@ input = File.read('day_13_input.txt')
             .split("\n\n")
             .map { |i| i.split("\n").map { |j| JSON.parse(j) } }
 
+dividers = [2, 6].map { |i| [[i]] }
+
+packets = input.reduce([]) { |acc, (i, j)| acc << i << j }
+               .concat(dividers)
+               .sort_by { |i| i.to_s.gsub(/\[\]/, '0').gsub(/[\[\]]/, '').split(', ').map(&:to_i) }
+
 puts input.map.with_index { |(l, r), i| compare(l, r).eql?(true) ? i + 1 : 0 }
           .sum
+
+puts dividers.map { |i| packets.index(i) + 1 }
+             .reduce(:*)
