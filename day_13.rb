@@ -23,11 +23,13 @@ def compare(left, right)
 end
 
 input = File.read('day_13_input.txt').split("\n\n")
-            .map { |i| i.split("\n").map { |j| JSON.parse(j) } }
 
-dividers = [2, 6].map { |i| [[i]] }
-packets = [nil] + input.reduce([]) { |acc, (i, j)| acc << i << j }.concat(dividers)
-                       .sort_by { |i| i.to_s.gsub(/\[\]/, '0').gsub(/[\[\]]/, '').split(', ').map(&:to_i) }
+dividers = [2, 6].map { |i| [i] }
+packets = [nil] + input.map { |i| i.gsub('[]', '[0]').split("\n").map { |j| JSON.parse(j) } }
+                       .reduce([]) { |acc, (i, j)| acc << i << j }
+                       .concat(dividers)
+                       .sort_by(&:flatten)
 
-puts input.map.with_index(1) { |(l, r), i| compare(l, r) ? i : 0 }.sum
+puts input.map { |i| i.split("\n").map { |j| JSON.parse(j) } }
+          .map.with_index(1) { |(l, r), i| compare(l, r) ? i : 0 }.sum
 puts dividers.map { |i| packets.index(i) }.reduce(:*)
