@@ -3,9 +3,9 @@
 require 'json'
 
 def compare(left, right)
-  return true if left.empty? && !right.empty?
-  return false if !left.empty? && right.empty?
-  return 'continue' if left.empty? && right.empty?
+  return if left.empty? && right.empty?
+  return true if left.empty?
+  return false if right.empty?
 
   lf = left.first
   rf = right.first
