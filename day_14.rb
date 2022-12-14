@@ -4,7 +4,7 @@ input = File.readlines('day_14_input.txt', chomp: true).map { |i| i.split(' -> '
 
 [false, true].each do |floor|
   x_min, x_max = input.flatten.map(&:to_i).minmax
-  y_max = input.flatten.map { |i| i.sub(/\d+,/, '').to_i }.max
+  y_max = input.flatten.map { |i| i.sub(/^\d+,/, '').to_i }.max
 
   if floor
     y_max += 2
@@ -29,14 +29,13 @@ input = File.readlines('day_14_input.txt', chomp: true).map { |i| i.split(' -> '
     raise i.to_s unless grid[x][y].eql? '.'
 
     loop do
-      moves = [0, -1, 1]
-              .map { |j| [x + j, y + 1] }
-              .filter do |j, k|
+      moves = [0, -1, 1].map { |j| [x + j, y + 1] }.filter do |j, k|
         raise i.to_s unless (x_min..x_max).include?(j)
         raise i.to_s unless (0..y_max).include?(k)
 
         grid[j][k].eql? '.'
       end
+
       break if moves.empty?
 
       x, y = moves.first
