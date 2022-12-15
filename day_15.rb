@@ -10,7 +10,6 @@ example1, part1 = [
   File.readlines(run[:filename], chomp: true)
       .map { |i| i.scan(/-?\d+/).map(&:to_i) }
       .map do |sx, sy, bx, by|
-    exclude << sx if sy.eql? run[:y]
     exclude << bx if by.eql? run[:y]
 
     distance = (sx - bx).abs + (sy - by).abs
