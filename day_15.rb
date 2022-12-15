@@ -19,7 +19,18 @@ example1, part1 = [
     ranges << ((sx - remainder)..(sx + remainder))
   end
 
-  ranges.map(&:to_a).flatten.uniq.count - exclude.uniq.count
+  ranges = ranges.sort_by { |i| [i.first, i.last] }
+                 .each_with_object([]) do |item, sum|
+    if sum.empty? || sum.last.last < (item.first - 1)
+      sum << item
+    else
+      sum[-1] = sum.last.first..([sum.last.last, item.last].max)
+    end
+  end
+
+  exclude = exclude.uniq.reject { |i| ranges.index { |j| j.include? i }.nil? }
+
+  ranges.reduce(0) { |sum, i| sum + i.size } - exclude.count
 end
 
 puts "Example 1 #{example1}"
