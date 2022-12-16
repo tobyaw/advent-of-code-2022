@@ -2,21 +2,21 @@
 
 def combine_ranges(ranges)
   ranges.sort_by { |i| [i.first, i.last] }
-        .each_with_object([]) do |item, sum|
-    if sum.empty? || sum[-1].last < (item.first - 1)
-      sum << item
+        .each_with_object([]) do |i, arr|
+    if arr.empty? || (i.first - arr[-1].last) > 1
+      arr << i
     else
-      sum[-1] = sum[-1].first..([sum[-1].last, item.last].max)
+      arr[-1] = arr[-1].first..([arr[-1].last, i.last].max)
     end
   end
 end
 
 def part1(input)
   ranges = []
-  exclude = []
+  beacons = []
 
   input.map do |sx, sy, bx, by|
-    exclude << bx if by.eql? 2_000_000
+    beacons << bx if by.eql? 2_000_000
 
     remainder = (sx - bx).abs + (sy - by).abs - (sy - 2_000_000).abs
     next unless remainder.positive?
@@ -24,26 +24,18 @@ def part1(input)
     ranges << ((sx - remainder)..(sx + remainder))
   end
 
-  combined_ranges = combine_ranges(ranges)
-  exclude = exclude.uniq.reject { |i| combined_ranges.index { |j| j.include? i }.nil? }
-  combined_ranges.reduce(0) { |sum, i| sum + i.size } - exclude.count
+  combine_ranges(ranges).sum(&:size) - beacons.uniq.count
 end
 
 def part2(input)
   processed_input = input.map do |sx, sy, bx, by|
     distance = (sx - bx).abs + (sy - by).abs
-    next if (sx + distance).negative?
-    next if (sy + distance).negative?
-    next if sx - distance > 4_000_000
-    next if sy - distance > 4_000_000
-
     [sx, sy, distance]
-  end.compact
+  end
 
   x = nil
   y = 0.upto(4_000_000).find_index do |row|
     ranges = []
-
     processed_input.map do |sx, sy, distance|
       remainder = distance - (sy - row).abs
       next unless remainder.positive?
